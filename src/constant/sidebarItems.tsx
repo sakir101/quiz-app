@@ -67,6 +67,14 @@ export const sidebarItems = (role: string) => {
           ),
           key: `/${role}/quiz/create`,
         },
+        {
+          label: (
+            <Link className="hover:text-slate-400" href={`/${role}/quiz/view`}>
+              View
+            </Link>
+          ),
+          key: `/${role}/quiz/view`,
+        },
       ],
     },
   ];
