@@ -1,0 +1,7 @@
+export const authKey = "accessToken"
+export const userUpdPass = "formValues_updPass"
+export const updProfileStudent = "formValues_updProfileStudent"
+export const updProfileFaculty = "formValues_updProfileFaculty"
+export const updProfileSuperAdmin = "formValues_updProfileSuperAdmin"
+export const createSubField = "formValues_createSubField"
+export const updateSubField = "formValues_updateSubField"
