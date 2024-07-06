@@ -25,7 +25,7 @@ const LoginPage = () => {
     message.loading({ content: "Loading...", key });
     try {
       const res = await userLogin({ ...data }).unwrap();
-
+      console.log(res);
       if (res?.accessToken) {
         storeUserInfo({ accessToken: res?.accessToken });
         const { role } = getUserInfo() as any;

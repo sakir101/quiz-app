@@ -10,7 +10,7 @@ export const adminApi = baseApi.injectEndpoints({
 
         getSingleAdmin: build.query({
             query: (id: string | string[] | undefined) => ({
-                url: `${Admin_URL}/${id}`,
+                url: `/user/${id}`,
                 method: "GET",
             }),
             providesTags: [tagTypes.admin],

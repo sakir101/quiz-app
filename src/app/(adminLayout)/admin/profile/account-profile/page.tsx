@@ -38,9 +38,7 @@ const AccountSuperAdmin = () => {
                 </div>
                 <div>
                   <p className="mb-5">
-                    <span className="text-lg font-semibold">
-                      {data?.user?.email}
-                    </span>
+                    <span className="text-lg font-semibold">{data?.email}</span>
                   </p>
                 </div>
               </div>

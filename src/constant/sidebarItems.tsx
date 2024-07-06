@@ -52,20 +52,20 @@ export const sidebarItems = (role: string) => {
   const adminSidebarItems: MenuProps["items"] = [
     ...defaultSidebarItems,
     {
-      label: "Quiz Management",
+      label: "Quiz",
       icon: <HeartOutlined />,
-      key: "Quiz Management",
+      key: "Quiz",
       children: [
         {
           label: (
             <Link
               className="hover:text-slate-400"
-              href={`/${role}/manage-faculties`}
+              href={`/${role}/quiz/create`}
             >
-              Manage Faculties
+              Create
             </Link>
           ),
-          key: `/${role}/manage-faculties`,
+          key: `/${role}/quiz/create`,
         },
       ],
     },
