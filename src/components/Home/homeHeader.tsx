@@ -1,5 +1,5 @@
 "use client";
-import { Col, Row } from "antd";
+
 import Image from "next/image";
 import backgroundImage from "../../assets/backgroundImg.png";
 import Link from "next/link";
@@ -7,7 +7,7 @@ import Link from "next/link";
 const HomeHeader = () => {
   return (
     <div
-      className="flex flex-col-reverse lg:flex-row lg:justify-around items-center py-5 lg:h-screen"
+      className="flex flex-col-reverse h-screen lg:flex-row lg:justify-around items-center py-5 lg:h-screen"
       style={{
         background:
           "linear-gradient(to right, #051937, #001b4b, #001c5f, #001b71, #0c1682)",

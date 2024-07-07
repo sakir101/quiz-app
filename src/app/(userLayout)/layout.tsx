@@ -14,18 +14,7 @@ import Loading from "../loading";
 import { USER_ROLE } from "@/constant/role";
 import { Secret } from "jsonwebtoken";
 
-type UserInfo = {
-  exp: number;
-  iat: number;
-  role: string;
-  userId: string;
-};
-
-const DashboardLayoutStudent = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+const DashboardLayoutUser = ({ children }: { children: React.ReactNode }) => {
   const userLoggedIn = isLoggedIn();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -62,4 +51,4 @@ const DashboardLayoutStudent = ({
   );
 };
 
-export default DashboardLayoutStudent;
+export default DashboardLayoutUser;

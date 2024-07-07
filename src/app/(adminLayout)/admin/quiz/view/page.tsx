@@ -1,25 +1,34 @@
 "use client";
-
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Button, Card, Modal, message } from "antd";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import Loading from "@/app/loading";
 import {
   useGetQuizQuery,
   useGetSingleQuizQuery,
   useUpdateQuizMutation,
   useDeleteQuizMutation,
 } from "@/redux/api/quiz";
-import { useState, useEffect } from "react";
-import { Button, Card, Modal, message, Input } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { useForm } from "react-hook-form";
-import Loading from "@/app/loading";
 
+const { confirm } = Modal;
 const QuizList = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
   const [quizID, setQuizID] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { data, isLoading, refetch } = useGetQuizQuery({
+  const {
+    data: quizList,
+    isLoading,
+    refetch,
+  } = useGetQuizQuery({
     refetchOnMountOrArgChange: true,
   });
-  const quizList = data;
 
   const { data: singleQuizData } = useGetSingleQuizQuery(quizID, {
     refetchOnMountOrArgChange: true,
@@ -28,62 +37,56 @@ const QuizList = () => {
   const [updateQuiz] = useUpdateQuizMutation();
   const [deleteQuiz] = useDeleteQuizMutation();
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    formState: { errors },
-  } = useForm();
-
-  useEffect(() => {
-    if (singleQuizData) {
-      setValue("questionText", singleQuizData.questionText);
-      setValue("quizId", singleQuizData.quizId);
-      setValue("options", JSON.stringify(singleQuizData.options, null, 2));
-      setValue("timeLimit", singleQuizData.timeLimit);
-    }
-  }, [singleQuizData, setValue]);
-
-  const showModal = (id: string) => {
-    setQuizID(id);
+  const showModal = (_id: string) => {
+    console.log(_id);
+    setQuizID(_id);
     setIsModalOpen(true);
   };
 
-  const onSubmit = async (data: any) => {
-    const key = "loadingKey";
-    message.loading({ content: "Loading...", key });
+  const onSubmit = async (value: any) => {
     try {
-      await updateQuiz({ data, id: quizID });
+      const formData = {
+        questionText: value.questionText,
+        quizId: value.quizId,
+        options: JSON.parse(value.options),
+        timeLimit: value.timeLimit,
+      };
+      await updateQuiz({ data: formData, id: quizID });
       refetch();
       setIsModalOpen(false);
-      message.destroy(key);
       message.success("Quiz updated successfully");
-      reset();
     } catch (err: any) {
       setIsModalOpen(false);
-      message.destroy(key);
       message.error("Quiz update failed");
     }
   };
 
   const handleDelete = async (id: string) => {
-    const key = "loadingKey";
-    message.loading({ content: "Loading...", key });
-    try {
-      await deleteQuiz({ id });
-      refetch();
-      message.destroy(key);
-      message.success("Quiz deleted successfully");
-    } catch (err: any) {
-      message.destroy(key);
-      message.error("Quiz deletion failed");
-    }
+    confirm({
+      title: "Are you sure you want to delete this quiz?",
+      content: "This action cannot be undone.",
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: async () => {
+        try {
+          await deleteQuiz({ id });
+          refetch();
+          message.success("Quiz deleted successfully");
+        } catch (err: any) {
+          message.error("Quiz deletion failed");
+        }
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
-    reset();
+    setQuizID("");
+    reset(); // Reset form fields when modal is closed
   };
 
   return (
@@ -102,7 +105,7 @@ const QuizList = () => {
               <p>Time Limit: {quiz.timeLimit} seconds</p>
               <Button
                 type="primary"
-                onClick={() => showModal(quiz.id)}
+                onClick={() => showModal(quiz._id)}
                 className="mr-2"
               >
                 <EditOutlined />
@@ -120,6 +123,7 @@ const QuizList = () => {
       )}
 
       <Modal
+        title="Update"
         visible={isModalOpen}
         okText="Update"
         onOk={handleSubmit(onSubmit)}
@@ -131,65 +135,54 @@ const QuizList = () => {
             <div className="mb-4">
               <label className="font-weight-bold">Question Text</label>
               <br />
-              <Input
+              <input
+                type="text"
+                placeholder="Type here"
+                className="input input-bordered w-full"
                 {...register("questionText", { required: true })}
-                placeholder="Question Text"
+                defaultValue={singleQuizData?.questionText}
               />
               {errors.questionText && (
-                <span className="text-red-500">Question Text is required</span>
+                <p className="text-red-500">Question Text is required</p>
               )}
             </div>
             <div className="mb-4">
               <label className="font-weight-bold">Quiz ID</label>
               <br />
-              <Input
+              <input
                 type="number"
+                className="input input-bordered w-full"
                 {...register("quizId", { required: true })}
-                placeholder="Quiz ID"
+                defaultValue={singleQuizData?.quizId}
               />
               {errors.quizId && (
-                <span className="text-red-500">Quiz ID is required</span>
+                <p className="text-red-500">Quiz ID is required</p>
               )}
             </div>
             <div className="mb-4">
               <label className="font-weight-bold">Options</label>
               <br />
-              <Input.TextArea
+              <textarea
+                className="textarea textarea-bordered w-full"
                 {...register("options", { required: true })}
                 rows={4}
-                placeholder={`[
-                  {
-                    "text": "Berlin",
-                    "isCorrect": false
-                  },
-                  {
-                    "text": "Madrid",
-                    "isCorrect": false
-                  },
-                  {
-                    "text": "Paris",
-                    "isCorrect": true
-                  },
-                  {
-                    "text": "Rome",
-                    "isCorrect": false
-                  }
-                ]`}
+                defaultValue={JSON.stringify(singleQuizData?.options, null, 2)}
               />
               {errors.options && (
-                <span className="text-red-500">Options are required</span>
+                <p className="text-red-500">Options are required</p>
               )}
             </div>
             <div className="mb-4">
               <label className="font-weight-bold">Time Limit</label>
               <br />
-              <Input
+              <input
                 type="number"
+                className="input input-bordered w-full"
                 {...register("timeLimit", { required: true })}
-                placeholder="Time Limit"
+                defaultValue={singleQuizData?.timeLimit}
               />
               {errors.timeLimit && (
-                <span className="text-red-500">Time Limit is required</span>
+                <p className="text-red-500">Time Limit is required</p>
               )}
             </div>
           </form>

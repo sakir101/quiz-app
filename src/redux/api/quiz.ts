@@ -1,4 +1,3 @@
-import { } from "@/types";
 import { tagTypes } from "../tag-types"
 import { baseApi } from "./baseApi"
 
@@ -28,7 +27,7 @@ export const quizApi = baseApi.injectEndpoints({
 
         getSingleQuiz: build.query({
             query: (id: string | string[] | undefined) => ({
-                url: `${Quiz_URL}/${id}`,
+                url: `${Quiz_URL}/getQuiz/${id}`,
                 method: "GET",
             }),
             providesTags: [tagTypes.quiz],

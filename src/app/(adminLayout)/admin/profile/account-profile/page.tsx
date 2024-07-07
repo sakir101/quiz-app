@@ -3,7 +3,6 @@
 import Loading from "@/app/loading";
 import { useGetSingleAdminQuery } from "@/redux/api/admin";
 import { getUserInfo } from "@/services/auth.service";
-import Image from "next/image";
 import React from "react";
 
 const AccountSuperAdmin = () => {

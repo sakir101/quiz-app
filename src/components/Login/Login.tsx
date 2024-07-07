@@ -49,7 +49,14 @@ const LoginPage = () => {
       }}
     >
       <Col sm={12} md={16} lg={10}>
-        <Image src={loginImage} width={500} alt="login image" />
+        <Image
+          src={loginImage}
+          alt="login image"
+          layout="responsive"
+          width={500}
+          height={300}
+          className="max-w-full h-auto"
+        />
       </Col>
       <Col sm={12} md={8} lg={8}>
         <h1
@@ -80,17 +87,6 @@ const LoginPage = () => {
                 size="large"
                 label="User Password"
               />
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                margin: "5px 0px",
-              }}
-            >
-              <div style={{ marginLeft: "auto" }}>
-                <Link href="/forget-password">forget password?</Link>
-              </div>
             </div>
             <Button type="primary" htmlType="submit">
               Login
