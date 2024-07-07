@@ -14,7 +14,6 @@ const AccountUser = () => {
 
     { refetchOnMountOrArgChange: true }
   );
-
   return (
     <div className="mt-5 lg:mt-7 p-4">
       {isLoading ? (
@@ -36,15 +35,10 @@ const AccountUser = () => {
                   <p className="mb-5">
                     <span className="text-lg text-gray-600 ">Email</span>
                   </p>
-                  <p className="mb-5">
-                    <span className="text-lg text-gray-600 ">Gender</span>
-                  </p>
                 </div>
                 <div>
                   <p className="mb-5">
-                    <span className="text-lg font-semibold">
-                      {data?.gender}
-                    </span>
+                    <span className="text-lg font-semibold">{data?.email}</span>
                   </p>
                 </div>
               </div>

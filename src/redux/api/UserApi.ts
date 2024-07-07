@@ -8,10 +8,9 @@ export const userApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         signUpUser: build.mutation({
             query: (data) => ({
-                url: '/user/create-user',
+                url: '/auth/signup',
                 method: "POST",
                 data,
-                contentType: "multipart/form-data",
             }),
             invalidatesTags: [tagTypes.user]
         }),
@@ -22,10 +21,30 @@ export const userApi = baseApi.injectEndpoints({
             }),
             providesTags: [tagTypes.user],
         }),
+        updateQuizMark: build.mutation({
+            query: ({ data, id }: { data: any; id: string }) => ({
+                url: `/auth/update/${id}`,
+                method: 'PATCH',
+                data
+            }),
+            invalidatesTags: [tagTypes.user],
+        }),
+        getUsers: build.query({
+            query: (arg: Record<string, any>) => {
+                return {
+                    url: `${User_URL}`,
+                    method: "GET",
+                    params: arg,
+                };
+            },
+            providesTags: [tagTypes.user]
+        }),
     }),
 })
 
 export const {
     useSignUpUserMutation,
-    useGetSingleUserQuery
+    useGetSingleUserQuery,
+    useUpdateQuizMarkMutation,
+    useGetUsersQuery
 } = userApi

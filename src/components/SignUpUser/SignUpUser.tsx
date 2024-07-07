@@ -3,8 +3,6 @@
 import { Button, Col, Row, message } from "antd";
 import Form from "../Forms/Form";
 import FormInput from "../Forms/FormInput";
-import FormSelectField from "../Forms/FormSelectField";
-import { genderOptions } from "@/constant/global";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signupUserSchema } from "@/schemas/signup";
 import { useSignUpUserMutation } from "@/redux/api/UserApi";
@@ -17,31 +15,24 @@ const SignUpStudent = () => {
   const [validation, setValidation] = useState(false);
 
   const onSubmit = async (values: any) => {
+    console.log(values);
     const obj = { ...values };
     delete obj["confPassword"];
-    let file = obj["file"];
-    delete obj["file"];
-
+    obj["role"] = "user";
     const data = JSON.stringify(obj);
-    const formData = new FormData();
 
-    formData.append("file", file as Blob);
-    formData.append("data", data);
-    console.log(formData);
     const key = "loadingKey";
     message.loading({ content: "Loading...", key });
 
-    signUpUser(formData)
+    signUpUser(data)
       .unwrap()
       .then(() => {
-        message.success("Check your email");
+        message.success("Registration successful");
         setValidation(false);
         setSuccess(true);
       })
       .catch((err) => {
-        message.error(
-          "User Registration Failed! You must provide appropriate university name and email"
-        );
+        message.error("User Registration Failed!");
         setSuccess(false);
         setValidation(true);
       })
@@ -80,21 +71,6 @@ const SignUpStudent = () => {
                 size="large"
                 label="Full Name"
                 placeholder="Sabbir"
-                required
-              />
-            </div>
-            <div
-              className="p-3 bg-slate-300 shadow-md shadow-slate-600 rounded-md"
-              style={{
-                margin: "15px 0px",
-              }}
-            >
-              <FormSelectField
-                size="large"
-                name="student.gender"
-                options={genderOptions}
-                label="Gender"
-                placeholder="Select"
                 required
               />
             </div>

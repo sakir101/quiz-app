@@ -30,20 +30,17 @@ export const sidebarItems = (role: string) => {
 
   const commonAdminSidebarItems: MenuProps["items"] = [
     {
-      label: "Manage Users",
+      label: "User",
       icon: <HeartOutlined />,
-      key: "Manage Users",
+      key: "User",
       children: [
         {
           label: (
-            <Link
-              className="hover:text-slate-400"
-              href={`/${role}/manage-faculties`}
-            >
-              Manage Faculties
+            <Link className="hover:text-slate-400" href={`/${role}/user/view`}>
+              View
             </Link>
           ),
-          key: `/${role}/manage-faculties`,
+          key: `/${role}/user/view`,
         },
       ],
     },
@@ -51,6 +48,7 @@ export const sidebarItems = (role: string) => {
 
   const adminSidebarItems: MenuProps["items"] = [
     ...defaultSidebarItems,
+    ...commonAdminSidebarItems,
     {
       label: "Quiz",
       icon: <HeartOutlined />,
@@ -83,12 +81,12 @@ export const sidebarItems = (role: string) => {
     ...defaultSidebarItems,
     {
       label: (
-        <Link className="hover:text-slate-400" href={`/${role}/career-guide`}>
-          Career Guide
+        <Link className="hover:text-slate-400" href={`/${role}/attempt-quiz`}>
+          Attempt Quiz
         </Link>
       ),
       icon: <MonitorOutlined />,
-      key: `/${role}/career-guide`,
+      key: `/${role}/attempt-quiz`,
     },
   ];
 
